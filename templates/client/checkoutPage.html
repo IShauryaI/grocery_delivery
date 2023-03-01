@@ -1,0 +1,215 @@
+{% extends 'client/LAYOUT.html' %}
+{% load static %}
+{% block PageData %}
+
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="accordion accordion-payment accordion-flush ps-4 ms-4" id="accordionFlushExample">
+                    {#         cart and invoice           #}
+
+                    <div class="accordion-item accordion-item-line1 bg-white shadow-sm rounded border-0 position-relative mb-3">
+                        <h2 class="accordion-header" id="flush-headingOne">
+                            <button class="accordion-button rounded-3 p-4" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    <span>
+                                    <h5 class="fw-bold mb-2">Cart items and Invoice</h5>
+                                    <p class="small text-muted mb-0">Your cart items and expected bill at one place</p>
+                                    </span>
+                            </button>
+                        </h2>
+
+                        <div id="flush-collapseOne" class="accordion-collapse collapse show"
+                             aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body px-4 pb-4 pt-0 row">
+
+                                <div class="col-md-6 p-3">
+                                    {% if request.session.client_info.id %}
+                                        <div class="bg-white cart-box border rounded position-relative ">
+                                            <div class="p-3 border-bottom">
+                                                <h5 class="mb-0 fw-bold">Your Cart</h5>
+                                                <p class="small mb-0"><span
+                                                        class="text-success"> items in your cart </span>
+                                                </p>
+                                            </div>
+                                            <div id="cartItemsContainer">
+
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="bg-white cart-box border rounded position-relative ">
+                                            <div class="p-3 border-bottom">
+                                                <h5 class="mb-0 fw-bold">No access to cart</h5>
+                                                <p class="small mb-0"><span
+                                                        class="text-success"> Login to access your cart </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6 p-3">
+                                    <div class="bg-white shadow-sm rounded position-relative overflow-hidden">
+                                        <div class="accordion" id="accordionExample">
+                                            <div class="accordion-item border-0">
+
+                                                <h2 class="accordion-header" id="headingOne">
+                                                    <button class="accordion-button bg-white text-dark p-3"
+                                                            type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                            aria-expanded="true"
+                                                            aria-controls="collapseOne">
+                                                        <div class="fw-bold">Invoice</div>
+                                                    </button>
+                                                </h2>
+
+                                                <div id="collapseOne" class="accordion-collapse collapse text-dark show"
+                                                     aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body px-3 pb-3 pt-0">
+                                                        <div class="d-flex justify-content-between align-items-center pb-1">
+                                                            <div class="text-muted">Item total</div>
+                                                            <div class="text-dark">&#8377;<span id="total_cost"></span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex justify-content-between align-items-center py-1">
+                                                            <div class="text-muted">Packing & Delivery charges</div>
+                                                            <div class="text-dark">&#8377;<span id="charges"></span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="bg-warning text-white px-3 py-2">
+                                                        <div class="d-flex justify-content-between align-items-center pt-1">
+                                            <span><i class="bi bi-check-circle-fill text-white"></i><span
+                                                    class="ms-2 fw-bold">To pay</span></span>&nbsp;
+
+                                                            <div class="fw-bold">&#8377;<span id="payable_amt"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 p-3">
+                                    <button class="form-control  btn btn-outline-success rounded py-3 px-4"
+                                            type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
+                                            aria-expanded="false" aria-controls="flush-collapseThree">NEXT
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item bg-white shadow-sm rounded border-0 position-relative mb-3 accordion-item-line2">
+                        <h2 class="accordion-header" id="flush-headingThree">
+                            <button class="accordion-button rounded-3 collapsed p-4" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                    aria-controls="flush-collapseThree">
+                                    <span>
+                                    <h5 class="fw-bold mb-2">Select payment method</h5>
+                                    <p class="small text-muted mb-0">Pay on delivery at your comfort or pay hassle-free online</p>
+                                    </span>
+                            </button>
+                        </h2>
+
+                        <div id="flush-collapseThree" class="accordion-collapse collapse"
+                             aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body border-top p-0">
+                                <form id="checkout-form" method="post">
+                                    {% csrf_token %}
+                                    <div class="p-4">
+                                        <div class="btn-group gap-3 osahan-btn-group d-flex" role="group"
+                                             aria-label="Basic radio toggle button group">
+
+                                            <input type="radio" class="btn-check" name="payment_mtd"
+                                                   id="payment_mtd_cod" value="cod"
+                                                   autocomplete="off" checked>
+                                            <label class="btn btn-outline-light d-flex gap-4 rounded p-4 col-6"
+                                                   for="payment_mtd_cod">
+                                                <i class="ri-wallet-3-fill ri-2x mb-0"></i>
+                                                <span class="text-start">
+                                                    <h6 class="mb-1 fw-bold">Cash on Delivery</h6>
+                                                    <div class="text-muted small text-opacity-50 mb-4">Pay after you have received your groceries with cash. </div>
+                                                    </span>
+                                                <i class="bi bi-check-circle-fill ms-auto"></i>
+                                            </label>
+
+                                            <input type="radio" class="btn-check" name="payment_mtd"
+                                                   id="payment_mtd_onl"
+                                                   value="online">
+                                            <label class="btn btn-outline-light d-flex gap-4 rounded p-4 col-6"
+                                                   for="payment_mtd_onl">
+                                                <i class="ri-bank-card-fill ri-2x mb-0"></i>
+                                                <span class="text-start">
+                                                        <h6 class="mb-1 fw-bold">Pay Online</h6>
+                                                        <div class="text-muted small text-opacity-50 mb-4">pay online through UPI, Credit cards or Debit cards. </div>
+                                                    </span>
+                                                <i class="bi bi-check-circle-fill ms-auto"></i>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="col-md-12 mt-4" id="checkoutBtnDiv">
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+
+
+
+        function executePayment() {
+            var amount = (document.getElementById('payable_amt').innerText)
+            
+            var paymentMtd
+            {# Code to get payment method #}
+            var mtd = document.getElementsByName('payment_mtd');
+            for (i = 0; i < mtd.length; i++) {
+                if (mtd[i].checked) {
+                    paymentMtd = mtd[i].value
+                }
+            }
+
+            var controls = document.getElementById('checkout-form').elements;
+            var formdata = new FormData;
+            for (var i = 0; i < controls.length; i++) {
+                if (controls[i].type == 'file') {
+                    formdata.append(controls[i].name, controls[i].files[0]);
+                } else {
+                    formdata.append(controls[i].name, controls[i].value);
+                }
+            }
+            formdata.append('amount', amount)
+
+            if (paymentMtd === 'online') {
+
+                payment(amount, `{{ request.session.client_info.mobile }}`, `{{ request.session.client_info.email }}`, formdata)
+            } else {
+                sendCartData(formdata)
+            }
+
+        }
+
+    </script>
+
+
+{% endblock %}

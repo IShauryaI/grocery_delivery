@@ -1,0 +1,88 @@
+{% extends 'client/LAYOUT.html' %}
+{% load static %}
+{% block PageData %}
+    <section class="bg-success">
+        <div class="container py-4">
+            <div class="row align-items-center gap-2">
+                <div class="col-12">
+                    <div class="d-flex gap-3 align-items-center">
+                        <div class="input-group input-group-lg border-0 p-1 bg-white shadow-sm rounded-3">
+                            <span class="input-group-text bg-white border-0"><i class="icofont-search"></i></span>
+                            <input type="text" class="form-control bg-white border-0 ps-0"
+                                   placeholder="Search for Stores" id="productSearch" name="productSearch">
+                        </div>
+                        <a class="d-block text-decoration-none text-white" href="/AllStores">
+                            <div class="d-flex justify-content-center"><i class="bi bi-x-lg fs-3"></i></div>
+                            <p class="d-flex justify-content-center m-0">Clear</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="container py-5">
+        <h3 class="mb-3 fw-bold">
+            {% if request.session.client_info.id %}
+                Stores in your city
+            {% else %}
+                DailyDelivery Stores
+            {% endif %}
+        </h3>
+        <div class="row g-4 mb-5">
+            {% if storeList|length == 0 %}
+                <div class="text-center py-5 bg-light-grey rounded">
+                    <h3 class="mb-3 fw-bold">No Products to be found at the moment</h3>
+                </div>
+            {% else %}
+                {% for stores in storeList %}
+                    <div class="col-md-3 pb-3">
+                        <div class="card h-100 listing-card overflow-hidden shadow-sm border-0">
+                            <a href="ShowStoreDetails/{{ stores.id }}">
+                                <img src="/static/media/{{ stores.store_image }}"
+                                     class="card-img-top of-cover store-image-card" alt="...">
+                            </a>
+
+                            <div class="card-body px-3 pb-3 pt-3">
+                                <p class="card-title">{{ stores.store_name }}</p>
+                                <p class="card-text text-muted small">{{ stores.store_address }}</p>
+                            </div>
+                            <div class="px-3 pt-0 pb-3 card-footer bg-white border-0 d-flex align-items-center justify-content-between">
+                                <div class="fw-bold text-warning-light"><i class="bi-star-fill me-2"></i>
+                                    {% if stores.store_rating > 0 %}
+                                        {{ stores.store_rating }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </div>
+                                <a class="btn btn-outline-success px-3 btn-sm rounded-pill"
+                                   href="/ShowStoreDetails/{{ stores.id }}">
+                                    <span><i class="bi bi-info-circle"></i></span>&nbsp;Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    </div>
+
+
+    <script>
+        var wage = document.getElementById("productSearch");
+        wage.addEventListener("keydown", function (e) {
+            if (e.code === "Enter") {  //checks whether the pressed key is "Enter"
+                submitSearchProduct(e);
+            }
+        });
+
+        function submitSearchProduct(e) {
+            var text = e.target.value;
+            window.location.href = `/ShowStoreSearch/${text}`
+        }
+    </script>
+
+
+{% endblock %}

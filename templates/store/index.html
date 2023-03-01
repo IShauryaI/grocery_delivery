@@ -1,0 +1,481 @@
+{% extends 'store/LAYOUT.html' %}
+
+{% load static %}
+
+{% block PageData %}
+
+
+
+    {# ______________________________________CALL-TO-ACTION STARTS HERE _____________________________________________________________________________________#}
+    {% if request.session.store_info.name %}
+
+        <section class="bg-success">
+            <div class="container">
+                <div class="row py-3">
+                    <div class="d-flex gap-3 align-items-center">
+                        <img src="{% static 'assets/img/own/D-icon.png' %}" class="img-fluid d-none d-md-block h-40">
+                        <div class="text-white fs-6"><b class="text-warning-light lobster">DailyDelivery
+                        </b>
+                            Welcomes you to Store Dashboard
+                            <b class="">
+                                {{ request.session.store_info.name }}
+
+                            </b>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    {% else %}
+        <section class="bg-success">
+            <div class="container">
+                <div class="row py-3">
+                    <div class="d-flex gap-3 align-items-center">
+                        <img src="{% static 'assets/img/own/D-icon.png' %}" class="img-fluid d-none d-md-block h-40">
+                        <div class="text-white fs-6">Expand your business through technology.
+                            Become a seller at <b class="text-warning-light lobster">DailyDelivery
+                            </b>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    {% endif %}
+    {# ______________________________________CALL-TO-ACTION ENDS HERE _____________________________________________________________________________________#}
+
+
+    {# ______________________________________ HERO STARTS HERE _____________________________________________________________________________________#}
+
+    <section class="main-banner bg-white pt-4">
+        <div class="container">
+            <div id="carouselExampleFade" class="carousel slide carousel-fade mb-4" data-bs-ride="carousel">
+
+                <div class="carousel-inner rounded">
+                    <div class="carousel-item active">
+                        <a href="javascript:void(0)"><img src="{% static 'assets/img/own/s5.png' %}"
+                                                          class="d-block w-100"
+                                                          alt="..."></a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="javascript:void(0)"><img src="{% static 'assets/img/own/s6.png' %}"
+                                                          class="d-block w-100"
+                                                          alt="..."></a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="javascript:void(0)"><img src="{% static 'assets/img/own/s7.png' %}"
+                                                          class="d-block w-100"
+                                                          alt="..."></a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="javascript:void(0)"><img src="{% static 'assets/img/own/s8.png' %}"
+                                                          class="d-block w-100"
+                                                          alt="..."></a>
+                    </div>
+
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+
+            </div>
+
+
+            <div class="row row-cols-2 row-cols-md-4 row-cols-lg-4 g-4">
+                <div class="col"><a href="javascript:void(0)"><img src="{% static 'assets/img/own/t1.png' %}"
+                                                                   alt="javascript:void(0)"
+                                                                   class="img-fluid rounded-3"></a></div>
+                <div class="col"><a href="javascript:void(0)"><img src="{% static 'assets/img/own/t2.png' %}"
+                                                                   alt="javascript:void(0)"
+                                                                   class="img-fluid rounded-3"></a></div>
+                <div class="col"><a href="javascript:void(0)"><img src="{% static 'assets/img/own/t3.png' %}"
+                                                                   alt="javascript:void(0)"
+                                                                   class="img-fluid rounded-3"></a></div>
+                <div class="col"><a href="javascript:void(0)"><img src="{% static 'assets/img/own/t4.png' %}"
+                                                                   alt="javascript:void(0)"
+                                                                   class="img-fluid rounded-3"></a></div>
+            </div>
+        </div>
+    </section>
+    {# ______________________________________HERO ENDS HERE _____________________________________________________________________________________#}
+
+
+    {# ______________________________________Login Signup HERE _____________________________________________________________________________________#}
+
+    {% if request.session.store_info == None %}
+        <section id="app-section" class="bg-white py-5 mobile-app-section">
+            <div class="container">
+
+
+                <div class="col-lg-12">
+                    <div class="accordion-item bg-white shadow-sm rounded border-0 overflow-hidden position-relative mb-3">
+                        <h2 class="accordion-header" id="flush-headingThree">
+                            <button class="accordion-button p-4 border-bottom" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                    aria-controls="flush-collapseThree">
+                                <span>
+                                    <h4 class="fw-bold mb-2">Register and Login </h4>
+                                    <p class="small text-muted mb-0">Register if you are a new store. Login to your dashboard through your password if you are an existing store</p>
+                                </span>
+                            </button>
+                        </h2>
+
+
+                        <div id="flush-collapseThree" class="accordion-collapse collapse show"
+                             aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body p-0">
+                                <div class="row m-0">
+                                    <div class="col-md-4 p-4 ps-md-4 py-md-4 pe-md-0 bg-light">
+                                        <div class="nav flex-column delivery-tabs" id="v-pills-tab" role="tablist"
+                                             aria-orientation="vertical">
+
+                                            <button class="nav-link active py-3" id="v-pills-profile-tab"
+                                                    data-bs-toggle="pill"
+                                                    data-bs-target="#v-pills-profile" type="button" role="tab"
+                                                    aria-controls="v-pills-profile" aria-selected="false">
+                                                <i class="ri-user-shared-2-line ri-xl"></i>Login
+                                            </button>
+
+                                            <button class="nav-link  py-3" id="v-pills-home-tab"
+                                                    data-bs-toggle="pill"
+                                                    data-bs-target="#v-pills-home" type="button" role="tab"
+                                                    aria-controls="v-pills-home" aria-selected="true">
+                                                <i class="ri-user-add-line ri-xl"></i>Register
+                                            </button>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8 p-4">
+                                        <div class="tab-content" id="v-pills-tabContent">
+
+                                            {# Register Store #}
+                                            <div class="tab-pane fade " id="v-pills-home" role="tabpanel"
+                                                 aria-labelledby="v-pills-home-tab">
+
+                                                <div class="border rounded mb-3">
+                                                    <div class="border-bottom p-3 pt-4">
+                                                        <h5 class="fw-bold mb-3">Register your store now</h5>
+
+                                                        <p class="bodytext-color">Register by following through simple
+                                                            steps
+                                                            and become a seller at DailyDelivery</p>
+                                                    </div>
+
+                                                    <div class="p-3">
+                                                        <form class="mt-4" method="post" id="StoreSignupForm"
+                                                              enctype="multipart/form-data">
+                                                            {% csrf_token %}
+
+                                                            {% for f in store_form %}
+                                                                <div class="form-group mb-3">
+                                                                    <div class="form-label">
+                                                                        {{ f.label_tag }}
+                                                                    </div>
+                                                                    {{ f }}
+                                                                </div>
+                                                            {% endfor %}
+
+                                                        <div class="row">
+                                                            <div class="col-md-6 d-grid py-2">
+                                                                <button type="reset"
+                                                                        class="btn btn-outline-success btn-lg py-3 px-4">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Reset Form</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="bi bi-x-lg align-middle"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                            <div class="col-md-6 d-grid py-2">
+                                                                <button type="button" onclick="submitSignup()"
+                                                                        class="btn btn-success btn-lg py-3 px-4">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Register Store</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="ri-add-circle-line ri-xl align-middle"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        </form>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            {# Login #}
+                                            <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
+                                                 aria-labelledby="v-pills-profile-tab">
+
+                                                <div class="border rounded mb-3">
+                                                    <div class="border-bottom p-3 pt-4">
+
+                                                        <h5 class="fw-bold mb-3">Login to your store dashboard</h5>
+
+                                                        <p class="bodytext-color">Manage your Store by logging in your
+                                                            store
+                                                            account</p>
+
+                                                    </div>
+
+                                                    <div class="p-3">
+                                                        <form class="mt-4" method="post" id="StoreLoginForm">
+                                                            {% csrf_token %}
+                                                            <div class="mb-4">
+                                                                <label for="store_email" class="form-label">Email<i
+                                                                        class="ri-mail-line align-bottom ms-1"></i>
+                                                                </label>
+                                                                <input type="text" class="form-control"
+                                                                       id="store_email" name="store_email"
+                                                                       aria-describedby="emailHelp"
+                                                                       placeholder="Eg: merchant@dailydelivery.com">
+                                                            </div>
+
+                                                            <div class="mb-4">
+                                                                <label for="store_password"
+                                                                       class="form-label">Password<i
+                                                                        class="ri-lock-password-line align-bottom ms-1"></i>
+                                                                </label>
+                                                                <input type="password" class="form-control"
+                                                                       id="store_password" name="store_password"
+                                                                       aria-describedby="emailHelp"
+                                                                       placeholder="* * * * * * * * * * * * * * * * * *">
+                                                            </div>
+
+                                                            <div class="d-grid">
+                                                                <button type="button" onclick="submitLogin()"
+                                                                        class="btn btn-success btn-lg py-3 px-4">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Login</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="ri-login-circle-line align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+    {% else %}
+        <section id="app-section" class="bg-white py-5 mobile-app-section">
+            <div class="container">
+
+                <div class="bg-cream rounded border-0 py-5 px-2">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="d-none d-md-block"><img alt="#" src="{% static 'assets/img/own/i2.png' %}"
+                                                            class="img-fluid img-220 rounded-pill p-4"></div>
+                        <div class="text-md-start text-center">
+                            <h2 class="mb-2 fw-bold">{{ request.session.store_info.name }}</h2>
+                            <p class="lead m-0"><i class="bi bi-basket3 ri-xl me-2"></i>{{ product|length }} Items listed <i
+                                    class="ms-5 ri-e-bike-2-line ri-xl    me-2"></i>{{ orderDetails|length }} Orders Delivered <i
+                                    class="ms-5 ri-user-star-line ri-xl me-2"></i>
+                                {% if request.session.store_info.rating > 0 %}
+                                    {{ request.session.store_info.rating }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                                Store Rating </p>
+                        </div>
+                    </div>
+
+                    {% if request.session.store_info.status == 'a' %}
+                        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 px-3">
+                            <div class="col">
+                                <a href="/store/ManageProducts" class="text-decoration-none text-black">
+                                    <div class="bg-white listing-card shadow-sm rounded-3 p-3 position-relative h-300 store-services">
+                                        <div class="bg-grad-theme rounded pt-2 pb-4 text-center icon-services">
+                                            <i class="text-white bi bi-basket3 ri-6x"></i>
+                                        </div>
+                                        <div class="listing-card-body pt-3">
+                                            <h5 class="card-title fw-bold mb-2">Manage Products</h5>
+                                            <p class="card-text text-muted mb-2">Manage products that you want to sell.
+                                                These products will be visible to the users</p>
+                                        </div>
+                                        <a href="/store/ManageProducts" class="stretched-link"></a>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a href="/store/ManageProfile" class="text-decoration-none text-black">
+                                    <div class="bg-white listing-card shadow-sm rounded-3 p-3 position-relative h-300 store-services">
+                                        <div class="bg-grad-theme rounded pt-2 pb-4 text-center icon-services">
+                                            <i class="text-white bi bi-shop ri-6x"></i>
+                                        </div>
+                                        <div class="listing-card-body pt-3">
+                                            <h5 class="card-title fw-bold mb-2">Manage Profile</h5>
+                                            <p class="card-text text-muted mb-2">Manage your login credentials and keep
+                                                your
+                                                profile updated and correct</p>
+                                        </div>
+                                        <a href="/store/ManageProfile" class="stretched-link"></a>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a href="/store/ManageOrders" class="text-decoration-none text-black">
+                                    <div class="bg-white listing-card shadow-sm rounded-3 p-3 position-relative h-300 store-services">
+                                        <div class="bg-grad-theme rounded pt-2 pb-4 text-center icon-services">
+                                            <i class="text-white bi bi-receipt-cutoff ri-6x"></i>
+                                        </div>
+                                        <div class="listing-card-body pt-3">
+                                            <h5 class="card-title fw-bold mb-2">Manage Orders</h5>
+                                            <p class="card-text text-muted mb-2">View all orders and manage their status
+                                                at
+                                                one place</p>
+
+                                        </div>
+                                        <a href="/store/ManageOrders" class="stretched-link"></a>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a href="/store/ManageReviews" class="text-decoration-none text-black">
+                                    <div class="bg-white listing-card shadow-sm rounded-3 p-3 position-relative h-300 store-services">
+                                        <div class="bg-grad-theme rounded pt-2 pb-4 text-center icon-services">
+                                            <i class="text-white ri-user-star-line ri-6x"></i>
+                                        </div>
+                                        <div class="listing-card-body pt-3">
+                                            <h5 class="card-title fw-bold mb-2">Manage Reviews</h5>
+                                            <p class="card-text text-muted mb-2">View all the reviews posted about your
+                                                store by teh customer on this site</p>
+                                        </div>
+                                        <a href="/store/ManageReviews" class="stretched-link"></a>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    {% elif request.session.store_info.status == 'p' %}
+                        <div class="text-center px-5 py-3">
+
+                            <h3 class="fw-bold">Your Store's profile is currently <span
+                                    class="text-theme-gold">pending</span></h3>
+
+                            <h5 class="fw-bold">You can access all features once your application
+                                <br> has been approved by the Administrator</h5>
+
+                        </div>
+                    {% elif request.session.store_info.status == 'd' %}
+                        <div class="text-center px-5 py-3">
+                            <h3 class="fw-bold">Your Store has been <span
+                                    class="text-theme-gold">temporarily blocked</span></h3>
+
+                            <h5 class="fw-bold">This may be due to selling inappropriate product
+                                <br>or due to too many bad reviews of your store</h5>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    {# ______________________________________Login Signup HERE _____________________________________________________________________________________#}
+
+    <script>
+        function submitLogin() {
+            var controls = document.getElementById('StoreLoginForm').elements;
+            var formdata = new FormData;
+            for (var i = 0; i < controls.length; i++) {
+                if (controls[i].type == 'file') {
+                    formdata.append(controls[i].name, controls[i].files[0]);
+                } else {
+                    formdata.append(controls[i].name, controls[i].value);
+                }
+            }
+            fetch('/store/StoreLogin', {
+                method: 'POST',
+                body: formdata
+            }).then(response => response.text()).then(data => {
+                if (data === 'success') {
+                    swal({
+                        title: "Store Login Successful",
+                        text: "You can access your dashboard now",
+                        icon: "success",
+                    });
+                    window.location.reload()
+                } else if (data === 'fail') {
+                    swal({
+                        title: "Store Login Failed",
+                        text: "Incorrect Login Credentials",
+                        icon: "error",
+                    });
+                } else {
+                    swal({
+                        title: "An Error Occurred",
+                        text: "An Error has occurred while submitting",
+                        icon: "warning",
+                    });
+                }
+            }).catch(e => {
+                console.log(e)
+            })
+        }
+
+        function submitSignup() {
+            {#$("#StoreSignupForm").validate();#}
+            if ($("#StoreSignupForm").valid()) {
+                var controls = document.getElementById('StoreSignupForm').elements;
+                var formdata = new FormData;
+                for (var i = 0; i < controls.length; i++) {
+                    if (controls[i].type == 'file') {
+                        formdata.append(controls[i].name, controls[i].files[0]);
+                    } else {
+                        formdata.append(controls[i].name, controls[i].value);
+                    }
+                }
+                fetch('/store/StoreSignup', {
+                    'method': 'POST',
+                    'body': formdata
+                }).then(response => response.text()).then(data => {
+                    if (data === 'success') {
+                        swal({
+                            title: "Store Successfully Registered",
+                            text: "You can login to your store now",
+                            icon: "success",
+                        });
+                        document.getElementById('StoreSignupForm').reset();
+                    } else {
+                        swal({
+                            title: "An Error Occurred",
+                            text: "An Error has occurred while submitting",
+                            icon: "warning",
+                        });
+                    }
+                })
+            }
+        }
+    </script>
+
+
+{% endblock %}

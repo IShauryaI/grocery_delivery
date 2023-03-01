@@ -1,0 +1,580 @@
+{% extends 'client/LAYOUT.html' %}
+
+{% load static %}
+
+{% block PageData %}
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shadow-sm bg-white rounded overflow-hidden border">
+                    <div class="p-0">
+                        <div class="row px-0 m-0">
+                            <div class="col-12 col-md-3 px-0 bg-light">
+
+                                <div class="border-bottom d-flex bg-white border-end align-items-center gap-3 p-4">
+                                    <img src="{% static 'assets/img/own/icons8-user-100.png' %}" alt=""
+                                         class="img-fluid rounded-circle bg-light h-40">
+                                    <span class="text-start">
+                                    <p class="mb-0 fw-bold">{{ request.session.client_info.name }}</p>
+                                    <small class="text-muted"><i
+                                            class="ri-mail-line me-2 align-bottom"></i>{{ request.session.client_info.email }}</small>
+                                    </span>
+                                </div>
+
+                                <div class="nav p-4 ps-md-4 py-md-4 pe-md-0 bg-light flex-column delivery-tabs"
+                                     id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                                    <button class="nav-link py-3 active" id="v-pills-home-tab" data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-home" type="button" role="tab"
+                                            aria-controls="v-pills-home" aria-selected="true"><i
+                                            class="ri-user-line"></i>
+                                        Store Profile
+                                    </button>
+
+                                    <button class="nav-link py-3" id="v-pills-orders-tab" data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-orders" type="button" role="tab"
+                                            aria-controls="v-pills-orders" aria-selected="true"><i
+                                            class="bi bi-basket3"></i>
+                                        View Orders
+                                    </button>
+
+                                    <button class="nav-link py-3" id="v-pills-review-tab" data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-review" type="button" role="tab"
+                                            aria-controls="v-pills-review" aria-selected="true"><i
+                                            class="ri-star-fill"></i>
+                                        View Reviews
+                                    </button>
+
+                                    <button class="nav-link py-3" id="v-pills-new-tab" data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-new" type="button" role="tab"
+                                            aria-controls="v-pills-new" aria-selected="true"><i
+                                            class="ri-user-settings-line"></i>
+                                        Manage Profile
+                                    </button>
+
+                                    <button class="nav-link py-3" id="v-pills-new-two-tab" data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-new-two" type="button" role="tab"
+                                            aria-controls="v-pills-new-two" aria-selected="true"><i
+                                            class="ri-logout-circle-line    "></i>
+                                        Manage Password
+                                    </button>
+
+                                    <a href="/clientLogout" class="nav-link py-3"><i class="bi bi-lock"></i>Logout</a>
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-9 px-0">
+
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    {#  Store Information TAB  #}
+                                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                                         aria-labelledby="v-pills-home-tab">
+                                        <div class="p-4">
+                                            <div class="mb-4 row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 pt-3 fw-bold">Profile Information
+                                                        for {{ clinetInfo.client_name }}</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="p-3">
+                                                <div class="row">
+                                                    <div class="col-md-12 p-2 py-4 bg-light rounded ">
+                                                        <table class="table table-borderless table-hover table-FIXED">
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <td class="word-break-table">{{ clinetInfo.client_name }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Contact No.</th>
+                                                                <td class="word-break-table">{{ clinetInfo.client_mobile }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Email address</th>
+                                                                <td class="word-break-table">{{ clinetInfo.client_email }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>City</th>
+                                                                <td class="word-break-table">{{ clinetInfo.City }}</td>
+                                                            </tr>
+                                                        </table>
+                                                        <h3 class="mt-4 px-2">Delivery address</h3>
+                                                        <div class="bg-light-grey py-4 px-3 lead rounded">
+                                                            {{ clinetInfo.client_address }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    {#  Manage Orders TAB  #}
+                                    <div class="tab-pane fade " id="v-pills-orders" role="tabpanel"
+                                         aria-labelledby="v-pills-orders-tab">
+                                        <div class="p-4">
+                                            <div class="mb-4 row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 pt-3 fw-bold">View Orders for
+                                                        {{ clinetInfo.client_name }}</h5>
+                                                </div>
+                                            </div>
+                                            <div class="row row-cols-1 row-cols-md-1 g-4" id="product-area">
+
+                                                {% for order in orders %}
+                                                    <div class="col">
+                                                    <div class="border rounded d-flex gap-3 p-4">
+                                                        <span class="text-start">
+                                                        <h6 class="mb-1 fw-bold">Your order of &#8377;{{ order.total_price }}</h6>
+                                                        <div class="text-muted small text-opacity-50 mb-3">You chose
+                                                            <b>{{ order.get_payment_mtd_display }}</b>
+                                                            as payment method on this transaction
+                                                        </div>
+                                                        <button type="button" onclick="showOrderDetails({{ order.id }}, `{{ order.order_date }}`, `{{ order.total_price }}`)" class="fw-bold btn btn-sm btn-success text-uppercase" >Tap to view details</button>
+                                                        </span>
+                                                        <div class="ms-auto text-end">
+                                                            <small>Order date</small>
+                                                            <p class="mb-0 small text-success">{{ order.order_date }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    {#  Manage Reviews TAB  #}
+                                    <div class="tab-pane fade " id="v-pills-review" role="tabpanel"
+                                         aria-labelledby="v-pills-new-review">
+                                        <div class="p-4">
+                                            <div class="mb-4 row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 pt-3 fw-bold">View Reviews by
+                                                        {{ clinetInfo.client_name }}</h5>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row row-cols-1 row-cols-md-1 g-4" id="product-area">
+                                                {{ reviewedStores }}
+                                                {% for stores in reviewStore %}
+
+                                                <div class="col">
+                                                    <div class="border rounded d-flex gap-3 p-4">
+                                                        <img src="/static/media/{{ stores.Store__store_image }}" alt="/static/assets/{{ stores.Store__store_image }}"
+                                                             class="img-fluid rounded bg-light h-75 w-25">
+                                                        <span class="text-start">
+                                                        <h6 class="mb-1 fw-bold">{{ stores.Store__store_name }}</h6>
+                                                        <div class="text-muted small text-opacity-50 mb-3">You ordered {{ stores.itemCount }} items form this store</div>
+                                                            <a class="fw-bold btn btn-sm btn-success text-uppercase" href="/ReviewStore/{{ stores.Store }}"> <i class="ri-star-fill me-2 align-middle"></i>Review Store</a>
+                                                        </span>
+                                                        <div class="ms-auto text-end">
+                                                            <small class="text-muted"><i class="ri-star-fill me-2 align-middle"></i>
+
+                                                                {% if stores.Store__store_rating >= 0 %}
+                                                                {{ stores.Store__store_rating }}
+                                                                {% else %}
+                                                                -
+                                                                {% endif %}
+                                                            </small>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {% endfor %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    {#  Manage Profile TAB  #}
+                                    <div class="tab-pane fade " id="v-pills-new" role="tabpanel"
+                                         aria-labelledby="v-pills-new-tab">
+                                        <div class="p-4">
+                                            <div class="mb-4 row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 pt-3 fw-bold">Manage Profile for
+                                                        {{ clinetInfo.client_name }}</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="p-3">
+                                                <form class="mt-4" method="post" id="clientUpdateProfileForm">
+                                                    {% csrf_token %}
+                                                    <div class="mb-4">
+                                                        <label for="client_email" class="form-label">Email<i
+                                                                class="ri-mail-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="text" class="form-control"
+                                                               id="client_email" name="client_email"
+                                                               aria-describedby="emailHelp"
+                                                               value={{ clinetInfo.client_email }}
+                                                                       data-rule-required="true">
+                                                    </div>
+
+                                                    <div class="mb-4">
+                                                        <label for="client_mobile" class="form-label">Contact Number<i
+                                                                class="ri-phone-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="number" class="form-control"
+                                                               id="client_mobile" name="client_mobile"
+                                                               aria-describedby="emailHelp"
+                                                               value={{ clinetInfo.client_mobile }}
+                                                                       data-rule-required="true">
+                                                    </div>
+
+                                                    <div class="mb-4">
+                                                        <label for="client_address" class="form-label">Contact Address<i
+                                                                class="ri-user-location-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <textarea class="form-control" rows="3"
+                                                                  id="client_address" name="client_address"
+                                                                  data-rule-required="true">{{ clinetInfo.client_address }}
+                                                        </textarea>
+                                                    </div>
+
+                                                    <div class="py-2">
+                                                        <label for="client_city" class="form-label">City<i
+                                                                class="ri-map-pin-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <select name="client_city" class="form-control"
+                                                                data-rule-required="true"
+                                                                required="" id="client_city">
+                                                            {% for i in cities %}
+                                                                {% if i.id != clinetInfo.City_id %}
+                                                                    <option value="{{ i.id }}"
+                                                                            id="{{ i.city_name }}">{{ i.city_name }}</option>
+                                                                {% else %}
+                                                                    <option selected value="{{ i.id }}"
+                                                                            id="{{ i.city_name }}">{{ i.city_name }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="row pt-5">
+                                                        <div class="col-md-6">
+                                                            <div class="d-grid">
+                                                                <button type="button"
+                                                                        class="btn btn-outline-success btn-lg py-3 px-4"
+                                                                        onclick="openProfile()">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Cancel</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="bi bi-x-lg align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="d-grid">
+                                                                <button type="button" onclick="submitUpdateProfile()"
+                                                                        class="btn btn-success btn-lg py-3 px-4">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Submit</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="ri-login-circle-line align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                            <div class="row row-cols-1 row-cols-md-1 g-4" id="product-area">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    {#  Manage Password TAB  #}
+                                    <div class="tab-pane fade " id="v-pills-new-two" role="tabpanel"
+                                         aria-labelledby="v-pills-new-two-tab">
+                                        <div class="p-4">
+                                            <div class="mb-4 row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 pt-3 fw-bold">Change Password for
+                                                        {{ request.session.store_info.name }}</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="p-3">
+                                                <form class="mt-4" method="post" id="StoreChangePasswordForm">
+                                                    {% csrf_token %}
+                                                    <div class="mb-4">
+                                                        <label for="old_password"
+                                                               class="form-label">Old Password<i
+                                                                class="ri-lock-password-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="password" class="form-control"
+                                                               id="old_password" name="old_password"
+                                                               aria-describedby="emailHelp"
+                                                               placeholder="* * * * * * * * * * * * * * * * * *">
+                                                    </div>
+
+                                                    <div class="mb-4">
+                                                        <label for="new_password"
+                                                               class="form-label">New Password<i
+                                                                class="ri-lock-password-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="password" class="form-control"
+                                                               id="new_password" name="new_password"
+                                                               aria-describedby="emailHelp"
+                                                               placeholder="* * * * * * * * * * * * * * * * * *">
+                                                    </div>
+
+                                                    <div class="mb-4">
+                                                        <label for="confirm_password"
+                                                               class="form-label">Confirm Password<i
+                                                                class="ri-lock-password-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="password" class="form-control"
+                                                               id="confirm_password" name="confirm_password"
+                                                               aria-describedby="emailHelp"
+                                                               placeholder="* * * * * * * * * * * * * * * * * *">
+                                                    </div>
+
+
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="d-grid">
+                                                                <button type="button"
+                                                                        class="btn btn-outline-success btn-lg py-3 px-4"
+                                                                        onclick="openProfile()">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Cancel</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="bi bi-x-lg align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="d-grid">
+                                                                <button type="button" onclick="submitChangePassword()"
+                                                                        class="btn btn-success btn-lg py-3 px-4">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Submit</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="ri-login-circle-line align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                            <div class="row row-cols-1 row-cols-md-1 g-4" id="product-area">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="orderDetailsModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow" style="width: 800px;">
+            <div class="modal-header px-4" style="width: 800px">
+                <h5 class="h6 modal-title fw-bold">Order Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4" id="OrderDetailsModelBody">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+
+    function showOrderDetails(orderId, date, cost){
+        console.log(orderId)
+        fetch(`/showOrderDetails/${orderId}`).then(res => res.json()).then(data => {
+            console.log(data)
+            showOrderDetailsModel(data, date, cost)
+        })
+    }
+
+    function showOrderDetailsModel(datas, order_date, total_cost){
+        $('#orderDetailsModel').modal("show")
+        let s = ``
+
+        document.getElementById('OrderDetailsModelBody').innerHTML = s
+        s += `
+                <div class="mb-4 row">
+<div class="col-md-8">
+<a class="text-success d-flex gap-2 text-decoration-none fw-bold">
+                        <i class="ri-bill-line text-success "></i>
+                        <div>Details order you placed on ${order_date}</div>
+                    </a>
+</div>
+
+                    <div class="col-md-4 ms-auto text-end align-top">
+                    Total price &#8377;${total_cost}
+                </div>
+                </div>
+        `;
+        datas.forEach(data => {
+            s += `
+            <div class="col mb-3">
+                  <div class="border rounded p-3 shadow-sm history-card">
+                    <div class="d-flex gap-3">
+                        <img src="/static/media/${data.product_image}" alt=""
+                             class="img-fluid rounded bg-light ch-100">
+                        <span class="text-start">
+                    <h6 class="mb-1 fw-bold">${data.product_name}</h6>
+                    <div class="text-muted small text-opacity-50 mb-1"><i class="ri-store-2-line"></i> ${data.store_name}</div>
+                    </span>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 border-top pt-3 mt-3">
+                <span class="text-start">
+                <p class="mb-0 ">Purchase price - &#8377;${data.product_price} <span class="text-muted">X ${data.product_quantity} items</span> </p>
+                <p class="mb-0 lead text-success">Total Cost - <b>&#8377;${data.total_price}</b></p>
+                </span>
+                        <div class="ms-auto text-end">`
+
+                if (data.product_delivery_status == 'p') {
+                    s += `<small><i class="ri-error-warning-fill  text-warning ri-xl"></i>
+                                </small>Processing
+                                <p class="mb-0 small text-warning">${data.product_name}
+                                                         Will be delivered to you soon</p>
+                            </div>
+                    </div>
+                </div>
+            </div>`;
+                } else if (data.product_delivery_status == 'd') {
+                    s += `<small><i class="bi bi-check-circle-fill text-success ri-xl align-middle"></i>
+                                </small>Delivered
+                                <p class="mb-0 small text-success">${data.product_name}
+                                    has been delivered</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+                }
+        })
+        document.getElementById('OrderDetailsModelBody').innerHTML = s
+    }
+
+
+        function openProfile() {
+            document.getElementById('v-pills-home-tab').click()
+        }
+
+        function submitUpdateProfile() {
+            if ($("#clientUpdateProfileForm").valid()) {
+                var controls = document.getElementById('clientUpdateProfileForm').elements;
+                var formdata = new FormData;
+                for (var i = 0; i < controls.length; i++) {
+                    if (controls[i].type == 'file') {
+                        formdata.append(controls[i].name, controls[i].files[0]);
+                    } else {
+                        formdata.append(controls[i].name, controls[i].value);
+                    }
+                }
+                fetch('/UpdateClientProfile', {
+                    'method': 'POST',
+                    'body': formdata
+                }).then(response => response.text()).then(data => {
+                    if (data === 'success') {
+                        swal({
+                            title: "Client Profile Updated",
+
+                            icon: "success",
+                        });
+                        openProfile()
+                    } else {
+                        swal({
+                            title: "An Error Occurred",
+                            text: "An Error has occurred while submitting",
+                            icon: "warning",
+                        });
+                    }
+                })
+            }
+        }
+
+        function submitChangePassword() {
+            if ($("#StoreChangePasswordForm").valid()) {
+                var controls = document.getElementById('StoreChangePasswordForm').elements;
+                var formdata = new FormData;
+                for (var i = 0; i < controls.length; i++) {
+                    if (controls[i].type == 'file') {
+                        formdata.append(controls[i].name, controls[i].files[0]);
+                    } else {
+                        formdata.append(controls[i].name, controls[i].value);
+                    }
+                }
+                fetch('/UpdateClientPassword', {
+                    'method': 'POST',
+                    'body': formdata
+                }).then(response => response.text()).then(data => {
+                    if (data === 'success') {
+                        document.getElementById('StoreChangePasswordForm').reset()
+                        swal({
+                            title: "Client Password Successfully Updated",
+                            icon: "success",
+                        });
+                    } else if (data === 'same') {
+                        swal({
+                            title: "Old Password cannot be same as new password",
+                            icon: "info",
+                        });
+                    } else if (data === 'wrong') {
+                        swal({
+                            title: "Incorrect Password",
+                            text: "The password you entered is incorrect",
+                            icon: "warning",
+                        });
+                    } else if (data === 'notSame') {
+                        swal({
+                            title: "The Two password fields does not match",
+                            icon: "warning",
+                        });
+                    } else {
+                        swal({
+                            title: "An Error Occurred",
+                            text: "An Error has occurred while submitting",
+                            icon: "warning",
+                        });
+                    }
+                })
+            }
+        }
+    </script>
+
+{% endblock %}

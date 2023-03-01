@@ -1,0 +1,258 @@
+{% extends 'client/LAYOUT.html' %}
+
+{% load static %}
+
+{% block PageData %}
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shadow-sm bg-white rounded overflow-hidden border">
+                    <div class="p-0">
+                        <div class="row px-0 m-0">
+                            <div class="col-12 col-md-3 px-0 bg-light">
+
+
+                                <div class="border-bottom d-flex bg-white border-end align-items-center gap-3 p-4">
+                                    <img src="{% static 'assets/img/own/D-icon.png' %}" alt=""
+                                         class="img-fluid rounded-circle bg-light h-40">
+                                    <span class="text-start">
+                                    <p class="mb-0 fw-bold">Welcome to DailyDelivery</p>
+                                    <small class="text-muted">Experience DailyDelivery now</small>
+                                    </span>
+                                </div>
+
+
+                                <div class="nav p-4 ps-md-4 py-md-4 pe-md-0 bg-light flex-column delivery-tabs"
+                                     id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                                    <button class="nav-link py-3 active" id="v-pills-home-tab" data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-home" type="button" role="tab"
+                                            aria-controls="v-pills-home" aria-selected="true"><i
+                                            class="ri-login-circle-line ri-xl"></i>
+                                        Log in
+                                    </button>
+
+                                    <button class="nav-link py-3" id="v-pills-new-tab" data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-new" type="button" role="tab"
+                                            aria-controls="v-pills-new" aria-selected="true"><i
+                                            class="ri-user-add-line ri-xl"></i>
+                                        Create Account
+                                    </button>
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-9 px-0">
+
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    {#  Client Login TAB  #}
+                                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                                         aria-labelledby="v-pills-home-tab">
+                                        <div class="p-4">
+                                            <div class="mb-4 row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 pt-3 fw-bold">Login to an Existing account</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="p-3">
+                                                <form class="mt-4" method="post" id="LoginAccountForm">
+                                                    {% csrf_token %}
+                                                    <div class="mb-4">
+                                                        <label for="email" class="form-label">Email<i
+                                                                class="ri-mail-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="text" class="form-control"
+                                                               id="email" name="email"
+                                                               aria-describedby="emailHelp"
+                                                               placeholder="Eg: jhondoe@developer.com"
+                                                        data-rule-required="true">
+                                                    </div>
+
+                                                    <div class="mb-4">
+                                                        <label for="password"
+                                                               class="form-label">Password<i
+                                                                class="ri-lock-password-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="password" class="form-control"
+                                                               id="password" name="password"
+                                                               aria-describedby="emailHelp"
+                                                               placeholder="* * * * * * * * * * * * * * * * * *">
+                                                    </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="d-grid">
+                                                                <button type="reset"
+                                                                        class="btn btn-outline-success btn-lg py-3 px-4">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Cancel</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="bi bi-x-lg align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="d-grid">
+                                                                <button type="button" onclick="submitLoginAccount()"
+                                                                        class="btn btn-success btn-lg py-3 px-4">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Submit</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="ri-login-circle-line align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    {#  CLinet Register TAB  #}
+                                    <div class="tab-pane fade " id="v-pills-new" role="tabpanel"
+                                         aria-labelledby="v-pills-new-tab" >
+                                        <div class="p-4">
+                                            <div class="mb-4 row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 pt-3 fw-bold">Create a new account</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="p-3">
+                                                <form class="mt-4" method="post" id="createAccountForm">
+                                                    {% csrf_token %}
+                                                    {% for f in clientRegisterForm %}
+                                                        <div class="form-group mb-3">
+                                                        <div class="form-label">
+                                                        {{ f.label }}
+                                                        </div>
+                                                        {{ f }}
+                                                        </div>
+                                                    {%endfor%}
+
+                                                <div class="row pt-3">
+                                                            <div class="col-md-6">
+                                                                <div class="d-grid">
+                                                                <button type="reset"
+                                                                        class="btn btn-outline-success btn-lg py-3 px-4">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Cancel</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="bi bi-x-lg align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="d-grid">
+                                                                <button type="button" onclick="submitCreateAccount()"
+                                                                        class="btn btn-success btn-lg py-3 px-4">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Submit</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="ri-login-circle-line align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function openProfile(){
+        document.getElementById('v-pills-home-tab').click()
+    }
+
+    function submitCreateAccount(){
+        if ($("#createAccountForm").valid()) {
+                var controls = document.getElementById('createAccountForm').elements;
+                var formdata = new FormData;
+                for (var i = 0; i < controls.length; i++) {
+                    if (controls[i].type == 'file') {
+                        formdata.append(controls[i].name, controls[i].files[0]);
+                    } else {
+                        formdata.append(controls[i].name, controls[i].value);
+                    }
+                }
+                fetch('/ClinetSignup', {
+                    'method': 'POST',
+                    'body': formdata
+                }).then(response => response.text()).then(data => {
+                    if (data === 'success') {
+                        swal({
+                            title: "Account created Successfully",
+                            text:"Your account has been created. You can now Log in ",
+                            icon: "success",
+                        });
+                        document.getElementById('createAccountForm').reset()
+                        openProfile()
+                    } else {
+                        swal({
+                            title: "An Error Occurred",
+                            text: "An Error has occurred while submitting",
+                            icon: "warning",
+                        });
+                    }
+                })
+            }
+    }
+
+     function submitLoginAccount(){
+        if ($("#LoginAccountForm").valid()) {
+                var controls = document.getElementById('LoginAccountForm').elements;
+                var formdata = new FormData;
+                for (var i = 0; i < controls.length; i++) {
+                    if (controls[i].type == 'file') {
+                        formdata.append(controls[i].name, controls[i].files[0]);
+                    } else {
+                        formdata.append(controls[i].name, controls[i].value);
+                    }
+                }
+
+                fetch('/ClinetLogin', {
+                    'method': 'POST',
+                    'body': formdata
+                }).then(response => response.text()).then(data => {
+                    if (data === 'success') {
+                        document.getElementById('LoginAccountForm').reset()
+                        window.location.href='/ClientDashboard'
+                    }
+                    else {
+                        swal({
+                            title: "Incorrect username or password",
+                            text: "Check your login credentials",
+                            icon: "warning",
+                        });
+                        document.getElementById('LoginAccountForm').reset()
+                    }
+                })
+            }
+    }
+    </script>
+
+{% endblock %}

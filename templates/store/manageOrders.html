@@ -1,0 +1,179 @@
+{% extends 'store/LAYOUT.html' %}
+
+{% load static %}
+
+{% block PageData %}
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shadow-sm bg-white rounded overflow-hidden border">
+                    <div class="p-0">
+                        <div class="row px-0 m-0">
+                            <div class="col-12 col-md-3 px-0 bg-light">
+
+                                <div class="border-bottom d-flex bg-white border-end align-items-center gap-3 p-4">
+                                    <img src="{% static 'assets/img/own/i2.png' %}" alt=""
+                                         class="img-fluid rounded-circle bg-light h-40">
+                                    <span class="text-start">
+                                    <p class="mb-0 fw-bold">{{ request.session.store_info.name }}</p>
+                                    <small class="text-muted"><i
+                                            class="ri-mail-line me-2"></i>{{ request.session.store_info.email }}</small>
+                                    </span>
+                                </div>
+
+                                <div class="nav p-4 ps-md-4 py-md-4 pe-md-0 bg-light flex-column delivery-tabs"
+                                     id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                                    <a href="/store/ManageProducts" class="nav-link py-3"><i class="bi bi-basket3"></i>
+                                        Products
+                                    </a>
+
+                                    <button class="nav-link py-3 active" id="v-pills-home-tab" data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-home" type="button" role="tab"
+                                            aria-controls="v-pills-home" aria-selected="true"><i
+                                            class="bi bi-receipt-cutoff"></i>
+                                        Orders
+                                    </button>
+
+                                    <a href="/store/ManageReviews" class="nav-link py-3"><i
+                                            class="ri-user-star-line"></i> Reviews
+                                    </a>
+
+                                    <a href="/store/StoreLogout" class="nav-link py-3"><i class="bi bi-lock"></i>Logout</a>
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-9 px-0">
+
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    {#  ORDERS TAB  #}
+                                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
+                                         aria-labelledby="v-pills-profile-tab">
+                                        <div class="p-4">
+                                            <div class="mb-4">
+                                                <h5 class="mb-0 fw-bold">Manage Orders</h5>
+                                            </div>
+
+                                            <h6 class="text-muted p-2 text-success">
+                                                <i class="ri-alarm-warning-line ri-xl align-middle "></i> {{ PendingOrderItems|length }}
+                                                order delivery is Pending
+                                            </h6>
+                                            <div class="row row-cols-1 row-cols-md-1 g-4" id="product-area">
+
+                                                {% for Items in PendingOrderItems %}
+
+                                                    <div class="col">
+                                                        <div class="border rounded p-3 shadow-sm history-card">
+                                                            <div class="d-flex gap-3">
+                                                                <img src="/static/media/{{ Items.Product.product_image }}"
+                                                                     alt=""
+                                                                     class="img-fluid rounded bg-light ch-100">
+                                                                <span class="text-start">
+                                                                <h6 class="mb-1 fw-bold">{{ Items.Product.product_name }}</h6>
+                                                                <div class="text-muted small text-opacity-50 mb-1">{{ Items.Product.Category }}</div>
+                                                                </span>
+                                                                <div class="ms-auto text-end">
+
+                                                                    <span class="text-start">
+                                                                    <p class="mb-0 ">Sold at &#8377; {{ Items.Product.product_new_price }}<span
+                                                                            class="text-muted"> after {{ Items.Product.product_offer }}% Discount </span> </p>
+                                                                    </span>
+                                                                    <div class="mt-5">
+                                                                        <select onchange="changeDelivryStatus({{ Items.id }})" class="form-control text-secondary text-secondary"
+                                                                                name="order_delivery_status"
+                                                                                id="order_delivery_status_{{ Items.id  }}">
+                                                                            <option value="p" selected>Pending</option>
+                                                                            <option value="d">Delivered</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center gap-3 border-top pt-3 mt-3">
+                                                                <span class="text-start">
+                                                                <p class="mb-0"><span class="text-muted">Delivery Address -</span> {{ Items.Client.client_address }}</p>
+                                                                <p class="mb-0 text-success">Contact no. <b> {{ Items.Client.client_mobile }} </b></p>
+                                                                </span>
+                                                                <div class="ms-auto text-end">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                {% endfor %}
+                                                <div class="border-top "></div>
+                                                <h6 class="text-muted p-2 mt-5  text-success ">
+                                                <i class="ri-thumb-up-line ri-xl align-middle "></i> {{ DeliveredOrderItems|length }}
+                                                order delivered
+                                            </h6>
+                                                {% for Items in DeliveredOrderItems %}
+
+                                                    <div class="col">
+                                                        <div class="border rounded p-3 shadow-sm history-card">
+                                                            <div class="d-flex gap-3">
+                                                                <img src="/static/media/{{ Items.Product.product_image }}"
+                                                                     alt=""
+                                                                     class="img-fluid rounded bg-light ch-100">
+                                                                <span class="text-start">
+                                                                <h6 class="mb-1 fw-bold">{{ Items.Product.product_name }}</h6>
+                                                                <div class="text-muted small text-opacity-50 mb-1">{{ Items.Product.Category }}</div>
+                                                                </span>
+                                                                <div class="ms-auto text-end">
+
+                                                                    <span class="text-start">
+                                                                    <p class="mb-0 ">Sold at &#8377; {{ Items.Product.product_new_price }}<span
+                                                                            class="text-muted"> after {{ Items.Product.product_offer }}% Discount </span> </p>
+                                                                    </span>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center gap-3 border-top pt-3 mt-3">
+                                                                <span class="text-start">
+                                                                <p class="mb-0"><span class="text-muted">Delivery Address -</span> {{ Items.Client.client_address }}</p>
+                                                                <p class="mb-0 text-success">Contact no. <b> {{ Items.Client.client_mobile }} </b></p>
+                                                                </span>
+                                                                <div class="ms-auto text-end">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                {% endfor %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function changeDelivryStatus(id){
+            var currStatus = document.getElementById(`order_delivery_status_${id}`).value
+            console.log(currStatus)
+            var formdata = new FormData;
+            formdata.append('order_delivery_status', currStatus);
+            formdata.append('order_id', id);
+            fetch('/store/deliverProduct', {method:'POST', body:formdata}).then(res => res.text()).then(data => {
+                if(data === 'success'){
+                    window.location.reload()
+                }else{
+
+                }
+            })
+    }
+
+    </script>
+
+
+{% endblock %}

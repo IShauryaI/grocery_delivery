@@ -1,0 +1,358 @@
+{% extends 'client/LAYOUT.html' %}
+{% load static %}
+{% block PageData %}
+
+
+    <main class="sticky-top ">
+        <section class="bg-success">
+            <div class="container py-4">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center listing-detail-info gap-3">
+                            <img src="/static/media/{{ storeInfo.store_image }}" class="img-fluid rounded-3" style="width:250px; height: 150px;"
+                                 alt="{{ storeInfo.store_image }}">
+                            <div class="listing-detail-info-body">
+                                <h3 class="listing-detail-info-title fw-bold mb-1 text-white">{{ storeInfo.store_name }}</h3>
+                                <p class="mb-3 text-white-50">{{ storeInfo.store_address }}</p>
+                                <div class="d-flex align-items-center gap-4">
+                                    <div>
+                                        {% if storeInfo.store_rating > 0 %}
+                                            <div class="text-uppercase text-warning-light fw-bold fs-14"><i
+                                                    class="bi bi-star-fill"></i> {{ storeInfo.store_rating }}
+                                            </div>
+                                            <p class="text-white-50 small mb-0"></p>
+                                        {% else %}
+                                            <div class="text-uppercase text-warning-light fw-bold fs-14"><i
+                                                    class="bi bi-star-fill"></i> -
+                                            </div>
+                                            <p class="text-white-50 small mb-0">No Ratings yet</p>
+                                        {% endif %}
+
+                                    </div>
+                                    <div>
+                                        <div class="text-uppercase text-white fw-bold fs-14">{{ storeInfo.store_mobile }}</div>
+                                        <p class="text-white-50 small mb-0"><i class="ri-phone-line"></i> Store Contact
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <div class="text-uppercase text-white fw-bold fs-14">{{ storeInfo.store_email }}</div>
+                                        <p class="text-white-50 small mb-0"><i class="ri-mail-line"></i> Store Email
+                                            Address </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <section class="border-bottom bg-light listing-detail-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-3 bg-white px-3 py-3">
+                <div class="listing-detail-fixed-sidebar">
+                    <h6 class="px-2">Products by Category</h6>
+                    <div class="bg-light-grey rounded px-3 py-1">
+                        <div class="nav flex-column listing-detail-tabs mt-3 pb-4" id="v-pills-tab" role="tablist"
+                             aria-orientation="vertical">
+                            <a class="nav-link" id="All Products"
+                               href="/ShowStoreDetails/{{ storeInfo.id }}">All Products
+                            </a>
+
+                            {% for cat in StoreProductCategories %}
+                                <a class="nav-link" href="/ShowStoreDetails/{{ storeInfo.id }}/{{ cat.Category }}"
+                                   id="{{ cat.Category }}">
+                                    {{ cat.Category }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <h6 class="px-2 pt-5">Store Reviews</h6>
+                    <div class="bg-light-grey rounded px-3 py-1">
+                        <div class="nav flex-column listing-detail-tabs mt-3 pb-4" id="v-pills-tab" role="tablist"
+                             aria-orientation="vertical">
+                            <a class="nav-link" id="v-pills-home-tab"
+                               href="/viewStoreReviews/{{ storeInfo.id }}">View Reviews
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="col-12 col-md-9">
+                    <div class="border-start border-end position-relative bg-white">
+
+                        <div class="tab-content" id="v-pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                                 aria-labelledby="v-pills-home-tab">
+                                <div class="bg-light border-bottom p-3">
+                                    <h5 class="fw-bold mb-0 text-dark">{{ current }}</h5>
+                                </div>
+                                <h6 class="small text-success mb-0 p-3">{{ StoreProducts|length }} ITEMS</h6>
+
+                                {% for product in StoreProducts %}
+                                    <div class="product-list d-flex p-3 border-bottom">
+                                        <img src="/static/media/{{ product.product_image }}" class="img-fluid"
+                                             alt="...">
+                                        <div class="product-list-body px-3">
+                                            <p class="fw-bold mb-1">{{ product.product_name }}</p>
+                                            <p class="card-text small mb-0">{{ product.Category }}</p>
+                                            <s class="card-text text-muted mb-2">{{ product.product_price }}</s>
+                                            <h6 class="fw-bold">&#8377;{{ product.product_new_price }}</h6>
+                                        </div>
+                                        <div class="-rounded-pill cart-quantity px-1 ms-auto mb-auto">
+                                            <button type="button" onclick="addToCart({{ product.id }})" class="btn btn-success"><i class="bi bi-plus"></i>Add
+                                            </button>
+                                            <br>
+                                            <a href="/ShowProductDetails/{{ product.id }}" class="btn btn-outline-success mt-2">Details</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel"
+                                 aria-labelledby="v-pills-settings-tab">
+                                <div class="bg-light border-bottom p-3">
+                                    <h5 class="fw-bold mb-0 text-dark">Desserts</h5>
+                                </div>
+                                <h6 class="small text-success mb-0 p-3">24 ITEMS</h6>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p18.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Harpic Powe Plus 10X Blue Toilet Cleaner</p>
+                                        <p class="card-text text-muted small mb-1">Lorem ipsum dolor sit amet
+                                            consectetur
+                                            adipisicing elit. Possimus corporis cupiditate sed est ratione dolor</p>
+                                        <p class="card-text text-muted mb-2">1 LTR</p>
+                                        <h6 class="fw-bold">&#8377;187</h6>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between rounded-pill border cart-quantity px-1 ms-auto mb-auto">
+                                        <div class="minus cart-quantity-btn"><i class="bi bi-dash text-success"></i>
+                                        </div>
+                                        <input class="form-control text-center border-0 py-0 box" type="text"
+                                               placeholder=""
+                                               aria-label="default input example" value="1">
+                                        <div class="plus cart-quantity-btn"><i class="bi bi-plus text-success"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p9.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Harpic Powe Plus 10X Blue Toilet Cleaner</p>
+                                        <p class="card-text small text-muted mb-2">500 ML</p>
+                                        <h6 class="fw-bold">&#8377;130</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p16.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Comfort Morning Fresh Fabric Conditioner Bottle</p>
+                                        <p class="card-text text-muted small mb-1">Morning freash fabric conditioner now
+                                            with fragrance peals gives all-day freshness to clothes soft</p>
+                                        <p class="card-text text-muted mb-2">1 LTR</p>
+                                        <h6 class="fw-bold">&#8377;235</h6>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between rounded-pill border cart-quantity px-1 ms-auto mb-auto">
+                                        <div class="minus cart-quantity-btn"><i class="bi bi-dash text-success"></i>
+                                        </div>
+                                        <input class="form-control text-center border-0 py-0 box" type="text"
+                                               placeholder=""
+                                               aria-label="default input example" value="1">
+                                        <div class="plus cart-quantity-btn"><i class="bi bi-plus text-success"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p8.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Rin detergent powder</p>
+                                        <p class="card-text small text-muted mb-2">1KG</p>
+                                        <h6 class="fw-bold">&#8377;65</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p4.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Surf Excel Easywash Detergent Powder</p>
+                                        <p class="card-text small text-muted mb-2">1KG</p>
+                                        <h6 class="fw-bold">&#8377;120</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p6.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Surf Excel Matic Front Load Detergent Powder</p>
+                                        <p class="card-text small text-muted mb-2">1LTR</p>
+                                        <h6 class="fw-bold">&#8377;250</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p5.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Surf Excel Matic Liquid Detergent Powder</p>
+                                        <p class="card-text small text-muted mb-2">1KG</p>
+                                        <h6 class="fw-bold">&#8377;230</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p3.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Tide Plus Jasmine & Rose Detergent Powder</p>
+                                        <p class="card-text small text-muted mb-2">1KG</p>
+                                        <h6 class="fw-bold">&#8377;160</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p2.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Vim Bar</p>
+                                        <p class="card-text small text-muted mb-2">500 GMS</p>
+                                        <h6 class="fw-bold">&#8377;52</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p7.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Black Hit Spray- Mosquitoes & Flies</p>
+                                        <p class="card-text small text-muted mb-2">500 GMS</p>
+                                        <h6 class="fw-bold">&#8377;52</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p12.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">AA Duracell Battery</p>
+                                        <p class="card-text small text-muted mb-2">4 PCS</p>
+                                        <h6 class="fw-bold">&#8377;160</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p17.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Duracell Aaa Battery</p>
+                                        <p class="card-text small text-muted mb-2">1 PCS</p>
+                                        <h6 class="fw-bold">&#8377;35</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p1.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">VIm Power Lemon Dishwash Get Bottle</p>
+                                        <p class="card-text small text-muted mb-2">750 ML</p>
+                                        <h6 class="fw-bold">&#8377;155</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p13.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Good knight Gold Flash Refill+Machine</p>
+                                        <p class="card-text small text-muted mb-2">1PC</p>
+                                        <h6 class="fw-bold">&#8377;89</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-list d-flex p-3 border-bottom">
+                                    <img src="assets/img/p14.jpg" class="img-fluid" alt="...">
+                                    <div class="product-list-body px-3">
+                                        <p class="fw-bold mb-1">Garbage Bag Large</p>
+                                        <p class="card-text small text-muted mb-2">1PC</p>
+                                        <h6 class="fw-bold">&#8377;89</h6>
+                                    </div>
+                                    <div class="ms-auto mb-auto">
+                                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill"><span><i
+                                                class="bi bi-plus-lg"></i></span>&nbsp;ADD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+
+    activeLink(`{{ current|safe }}`)
+     function activeLink(val){
+         console.log(val)
+
+         if(document.getElementById(val).className === 'nav-link active')
+          {
+              document.getElementById(val).className = "nav-link";
+          }
+          else
+          {
+          document.getElementById(val).className = "nav-link active";
+   }
+
+     }
+    </script>
+
+
+{% endblock %}

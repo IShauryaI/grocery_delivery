@@ -1,0 +1,393 @@
+{% extends 'store/LAYOUT.html' %}
+
+{% load static %}
+
+{% block PageData %}
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shadow-sm bg-white rounded overflow-hidden border">
+                    <div class="p-0">
+                        <div class="row px-0 m-0">
+                            <div class="col-12 col-md-3 px-0 bg-light">
+
+
+                                <div class="border-bottom d-flex bg-white border-end align-items-center gap-3 p-4">
+                                    <img src="{% static 'assets/img/own/i2.png' %}" alt=""
+                                         class="img-fluid rounded-circle bg-light h-40">
+                                    <span class="text-start">
+                                    <p class="mb-0 fw-bold">{{ request.session.store_info.name }}</p>
+                                    <small class="text-muted"><i
+                                            class="ri-mail-line me-2"></i>{{ request.session.store_info.email }}</small>
+                                    </span>
+                                </div>
+
+
+                                <div class="nav p-4 ps-md-4 py-md-4 pe-md-0 bg-light flex-column delivery-tabs"
+                                     id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                                    <button class="nav-link py-3 active" id="v-pills-home-tab" data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-home" type="button" role="tab"
+                                            aria-controls="v-pills-home" aria-selected="true"><i
+                                            class="bi bi-basket3"></i>
+                                        Store Profile
+                                    </button>
+
+                                    <button class="nav-link py-3" id="v-pills-new-tab" data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-new" type="button" role="tab"
+                                            aria-controls="v-pills-new" aria-selected="true"><i
+                                            class="bi bi-basket3"></i>
+                                        Manage Profile
+                                    </button>
+
+                                    <button class="nav-link py-3" id="v-pills-new-two-tab" data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-new-two" type="button" role="tab"
+                                            aria-controls="v-pills-new-two" aria-selected="true"><i
+                                            class="bi bi-basket3"></i>
+                                        Manage Password
+                                    </button>
+
+
+                                    <a href="/store/StoreLogout" class="nav-link py-3"><i class="bi bi-lock"></i>Logout</a>
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-9 px-0">
+
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    {#  Store Information TAB  #}
+                                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                                         aria-labelledby="v-pills-home-tab">
+                                        <div class="p-4">
+                                            <div class="mb-4 row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 pt-3 fw-bold">Store Profile
+                                                        for {{ request.session.store_info.name }}</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="p-3">
+                                                <div class="row">
+                                                    <div class="col-md-10 offset-md-1">
+                                                        <img class="img-fluid rounded"
+                                                             src="/static/media/{{ storeInfo.store_image }}" alt="">
+                                                    </div>
+                                                    <div class="col-md-10 offset-md-1 p-2 py-5">
+                                                        <table class="table table-borderless table-hover table-FIXED">
+                                                            <tr>
+                                                                <th>Email</th>
+                                                                <td class="word-break-table">{{ storeInfo.store_email }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Contact No.</th>
+                                                                <td class="word-break-table">{{ storeInfo.store_mobile }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Address</th>
+                                                                <td class="word-break-table">{{ storeInfo.store_address }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>City</th>
+                                                                <td class="word-break-table">{{ storeInfo.City }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Status</th>
+                                                                <td class="word-break-table">{{ storeInfo.get_store_status_display }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Rating</th>
+                                                                <td>
+                                                                    {% if  storeInfo.store_rating == -1 %}
+                                                                        No Ratings Yet
+                                                                    {% else %}
+                                                                        {{ storeInfo.store_rating }}
+                                                                    {% endif %}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    {#  Manage Profile TAB  #}
+                                    <div class="tab-pane fade " id="v-pills-new" role="tabpanel"
+                                         aria-labelledby="v-pills-new-tab" >
+                                        <div class="p-4">
+                                            <div class="mb-4 row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 pt-3 fw-bold">Manage Profile for
+                                                        {{ request.session.store_info.name }}</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="p-3">
+                                                <form class="mt-4" method="post" id="StoreUpdateprofileForm">
+                                                    {% csrf_token %}
+                                                    <div class="mb-4">
+                                                        <label for="store_email" class="form-label">Email<i
+                                                                class="ri-mail-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="text" class="form-control"
+                                                               id="store_email" name="store_email"
+                                                               aria-describedby="emailHelp"
+                                                               value={{ storeInfo.store_email }}
+                                                        data-rule-required="true">
+                                                    </div>
+
+                                                    <div class="mb-4">
+                                                        <label for="store_mobile" class="form-label">Contact Number<i
+                                                                class="ri-phone-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="number" class="form-control"
+                                                               id="store_mobile" name="store_mobile"
+                                                               aria-describedby="emailHelp"
+                                                               value={{ storeInfo.store_mobile }}
+                                                        data-rule-required="true">
+                                                    </div>
+
+                                                    <div class="mb-4">
+                                                        <label for="store_image" class="form-label">Store Image<i
+                                                                class="ri-image-2-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="file" class="form-control"
+                                                               id="store_image" name="store_image"
+                                                               aria-describedby="emailHelp">
+                                                    </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="d-grid">
+                                                                <button type="button"
+                                                                        class="btn btn-outline-success btn-lg py-3 px-4"
+                                                                onclick="openProfile()">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Cancel</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="bi bi-x-lg align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="d-grid">
+                                                                <button type="button" onclick="submitUpdateProfile()"
+                                                                        class="btn btn-success btn-lg py-3 px-4">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Submit</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="ri-login-circle-line align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </form>
+                                            </div>
+
+                                            <div class="row row-cols-1 row-cols-md-1 g-4" id="product-area">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    {#  Manage Password TAB  #}
+                                    <div class="tab-pane fade " id="v-pills-new-two" role="tabpanel"
+                                         aria-labelledby="v-pills-new-two-tab">
+                                        <div class="p-4">
+                                            <div class="mb-4 row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 pt-3 fw-bold">Change Password for
+                                                        {{ request.session.store_info.name }}</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="p-3">
+                                                <form class="mt-4" method="post" id="StoreChangePasswordForm" >
+                                                    {% csrf_token %}
+                                                    <div class="mb-4">
+                                                        <label for="old_password"
+                                                               class="form-label">Old Password<i
+                                                                class="ri-lock-password-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="password" class="form-control"
+                                                               id="old_password" name="old_password"
+                                                               aria-describedby="emailHelp"
+                                                               placeholder="* * * * * * * * * * * * * * * * * *">
+                                                    </div>
+
+                                                    <div class="mb-4">
+                                                        <label for="new_password"
+                                                               class="form-label">New Password<i
+                                                                class="ri-lock-password-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="password" class="form-control"
+                                                               id="new_password" name="new_password"
+                                                               aria-describedby="emailHelp"
+                                                               placeholder="* * * * * * * * * * * * * * * * * *">
+                                                    </div>
+
+                                                    <div class="mb-4">
+                                                        <label for="confirm_password"
+                                                               class="form-label">Confirm Password<i
+                                                                class="ri-lock-password-line align-bottom ms-1"></i>
+                                                        </label>
+                                                        <input type="password" class="form-control"
+                                                               id="confirm_password" name="confirm_password"
+                                                               aria-describedby="emailHelp"
+                                                               placeholder="* * * * * * * * * * * * * * * * * *">
+                                                    </div>
+
+
+                                                    <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="d-grid">
+                                                                <button type="button"
+                                                                        class="btn btn-outline-success btn-lg py-3 px-4"
+                                                                onclick="openProfile()">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Cancel</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="bi bi-x-lg align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="d-grid">
+                                                                <button type="button" onclick="submitChangePassword()"
+                                                                        class="btn btn-success btn-lg py-3 px-4">
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div>Submit</div>
+                                                                        <div class="fw-bold"><i
+                                                                                class="ri-login-circle-line align-middle ri-xl"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </form>
+                                            </div>
+
+                                            <div class="row row-cols-1 row-cols-md-1 g-4" id="product-area">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function openProfile(){
+        document.getElementById('v-pills-home-tab').click()
+    }
+
+    function submitUpdateProfile(){
+        if ($("#StoreUpdateprofileForm").valid()) {
+                var controls = document.getElementById('StoreUpdateprofileForm').elements;
+                var formdata = new FormData;
+                for (var i = 0; i < controls.length; i++) {
+                    if (controls[i].type == 'file') {
+                        formdata.append(controls[i].name, controls[i].files[0]);
+                    } else {
+                        formdata.append(controls[i].name, controls[i].value);
+                    }
+                }
+                fetch('/store/UpdateProfile', {
+                    'method': 'POST',
+                    'body': formdata
+                }).then(response => response.text()).then(data => {
+                    if (data === 'success') {
+                        swal({
+                            title: "Store Profile Updated",
+
+                            icon: "success",
+                        });
+                        openProfile()
+                    } else {
+                        swal({
+                            title: "An Error Occurred",
+                            text: "An Error has occurred while submitting",
+                            icon: "warning",
+                        });
+                    }
+                })
+            }
+    }
+
+     function submitChangePassword(){
+        if ($("#StoreChangePasswordForm").valid()) {
+                var controls = document.getElementById('StoreChangePasswordForm').elements;
+                var formdata = new FormData;
+                for (var i = 0; i < controls.length; i++) {
+                    if (controls[i].type == 'file') {
+                        formdata.append(controls[i].name, controls[i].files[0]);
+                    } else {
+                        formdata.append(controls[i].name, controls[i].value);
+                    }
+                }
+                fetch('/store/UpdatePassword', {
+                    'method': 'POST',
+                    'body': formdata
+                }).then(response => response.text()).then(data => {
+                    if (data === 'success') {
+                        document.getElementById('StoreChangePasswordForm').reset()
+                        swal({
+                            title: "Store Password Successfully Updated",
+                            icon: "success",
+                        });
+                    }
+                    else if(data === 'same') {
+                        swal({
+                            title: "Old Password cannot be same as new password",
+                            icon: "info",
+                        });
+                    }
+                    else if(data === 'wrong') {
+                        swal({
+                            title: "Incorrect Password",
+                            text: "The password you entered is incorrect",
+                            icon: "warning",
+                        });
+                    }
+                    else if(data === 'notSame') {
+                        swal({
+                            title: "The Two password fields does not match",
+                            icon: "warning",
+                        });
+                    }
+                    else {
+                        swal({
+                            title: "An Error Occurred",
+                            text: "An Error has occurred while submitting",
+                            icon: "warning",
+                        });
+                    }
+                })
+            }
+    }
+    </script>
+
+{% endblock %}

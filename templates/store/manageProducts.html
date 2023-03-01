@@ -1,0 +1,427 @@
+{% extends 'store/LAYOUT.html' %}
+
+{% load static %}
+
+{% block PageData %}
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shadow-sm bg-white rounded overflow-hidden border">
+                    <div class="p-0">
+                        <div class="row px-0 m-0">
+                            <div class="col-12 col-md-3 px-0 bg-light">
+
+
+                                <div class="border-bottom d-flex bg-white border-end align-items-center gap-3 p-4">
+                                    <img src="{% static 'assets/img/own/i2.png' %}" alt=""
+                                         class="img-fluid rounded-circle bg-light h-40">
+                                    <span class="text-start">
+                                    <p class="mb-0 fw-bold">{{ request.session.store_info.name }}</p>
+                                    <small class="text-muted"><i
+                                            class="ri-mail-line me-2"></i>{{ request.session.store_info.email }}</small>
+                                    </span>
+                                </div>
+
+
+                                <div class="nav p-4 ps-md-4 py-md-4 pe-md-0 bg-light flex-column delivery-tabs"
+                                     id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                                    <button class="nav-link py-3 active" id="v-pills-home-tab" data-bs-toggle="pill"
+                                            data-bs-target="#v-pills-home" type="button" role="tab"
+                                            aria-controls="v-pills-home" aria-selected="true"><i
+                                            class="bi bi-basket3"></i>
+                                        Products
+                                    </button>
+
+                                    <a href="/store/ManageOrders" class="nav-link py-3"><i
+                                            class="bi bi-receipt-cutoff"></i> Orders
+                                    </a>
+
+                                    <a href="/store/ManageReviews" class="nav-link py-3"><i
+                                            class="ri-user-star-line"></i> Reviews
+                                    </a>
+
+
+                                    <a href="/store/StoreLogout" class="nav-link py-3"><i class="bi bi-lock"></i>Logout</a>
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-9 px-0">
+
+                                <div class="tab-content" id="v-pills-tabContent">
+
+                                    {#  PRODUCTS TAB  #}
+                                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                                         aria-labelledby="v-pills-home-tab">
+                                        <div class="p-4">
+                                            <div class="mb-4 row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 pt-3 fw-bold">Products listed
+                                                        by {{ request.session.store_info.name }}</h5>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#add-product"
+                                                            class="btn btn-outline-success btn-lg py-3 px-4 w-100">
+                                                        ADD NEW PRODUCT
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="row row-cols-1 row-cols-md-1 g-4" id="product-area">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#    Add Product Form#}
+    <div class="modal fade" id="add-product" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+         tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered login-popup-main">
+            <div class="modal-content border-0 shadow overflow-hidden rounded">
+                <div class="modal-body p-0">
+                    <div class="login-popup">
+                        <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        <div class="row g-0">
+
+                            <div class="col-md-12 col-lg-12 py-lg-5">
+                                <div class="login p-5">
+                                    <div class="mb-4 pb-2">
+                                        <h5 class="mb-2 fw-bold">Add a new Product</h5>
+                                        <p class="text-muted mb-0">New Products will be first reviewed by the admin
+                                            before they are visible for sale
+                                        </p>
+                                    </div>
+                                    <form method="post" enctype="multipart/form-data" id="add-product-form">
+                                        {% csrf_token %}
+                                        {% for f in addProductForm %}
+                                            <div class="py-2">
+                                                {{ f.label }}
+                                                {{ f }}
+                                            </div>
+                                        {% endfor %}
+
+                                        <div class="row">
+                                            <div class="col-md-6 px-3">
+                                                <button type="reset"
+                                                        class="btn btn-outline-success btn-lg py-3 px-4 text-uppercase w-100 mt-4">
+                                                    Reset <i
+                                                        class="bi bi-x-lg ms-2"></i></button>
+                                            </div>
+                                            <div class="col-md-6 px-3">
+                                                <button type="button" onclick="submitAddProduct()"
+                                                        class="btn btn-success btn-lg py-3 px-4 text-uppercase w-100 mt-4">
+                                                    Submit <i
+                                                        class="bi bi-arrow-right ms-2"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#    Update Product Form#}
+    <div class="modal fade" id="update-product-modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+         tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered login-popup-main">
+            <div class="modal-content border-0 shadow overflow-hidden rounded">
+                <div class="modal-body p-0">
+                    <div class="login-popup">
+                        <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        <div class="row g-0">
+
+                            <div class="col-md-12 col-lg-12 py-lg-5">
+                                <div class="login p-5">
+                                    <div class="mb-4 pb-2">
+                                        <h5 class="mb-2 fw-bold">Update Product Form</h5>
+
+                                    </div>
+
+                                    <form method="post" enctype="multipart/form-data" id="update-product-form">
+                                        {% csrf_token %}
+
+                                        <input type="number" name="id" class="form-control"
+                                                   data-rule-required="true"
+                                                   maxlength="80" required="" id="product_id">
+
+                                        <div class="py-2">
+                                            Enter Product Name
+                                            <input type="text" name="product_name" class="form-control"
+                                                   placeholder="Eg: Parle G Biscuits" data-rule-required="true"
+                                                   maxlength="80" required="" id="product_name">
+                                        </div>
+                                    
+                                        <div class="py-2 text-center">
+                                            <img class="img-220" alt="" id="update-form-product-image">
+                                        </div>
+
+                                    <div class="py-2">
+                                            Change Product Image
+                                            <input onchange="removeOldImage()" type="file" name="product_image" class="form-control"
+                                                   id="product_image">
+                                        </div>
+
+                                        <div class="py-2">
+                                            Enter Product Description
+                                            <textarea name="product_description" cols="40" rows="4" class="form-control"
+                                                      data-rule-required="true" required=""
+                                                      id="product_description"></textarea>
+                                        </div>
+
+                                        <div class="py-2">
+                                            Choose product Category
+                                            <select name="Category" class="form-control" data-rule-required="true"
+                                                    required="" id="Category">
+                                                {% for i in categories %}
+                                                    <option value="{{ i.category_name }}" id="{{ i.category_name }}">{{ i.category_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="py-2">
+                                            Enter Product MRP
+                                            <input type="number" name="product_price" class="form-control"
+                                                   placeholder="Eg: 500" data-rule-required="true" maxlength="80"
+                                                   required="" id="product_price">
+                                        </div>
+
+                                        <div class="py-2">
+                                            Enter Product Discount
+                                            <input type="number" name="product_offer" class="form-control"
+                                                   placeholder="Eg: 20%" data-rule-required="true" maxlength="80"
+                                                   required="" id="product_offer">
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 px-3">
+                                                <button type="reset"
+                                                        class="btn btn-outline-success btn-lg py-3 px-4 text-uppercase w-100 mt-4">
+                                                    Reset <i
+                                                        class="bi bi-x-lg ms-2"></i></button>
+                                            </div>
+                                            <div class="col-md-6 px-3">
+                                                <button type="button" onclick="submitUpdateProduct()"
+                                                        class="btn btn-success btn-lg py-3 px-4 text-uppercase w-100 mt-4">
+                                                    Submit <i
+                                                        class="bi bi-arrow-right ms-2"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        getproductsData()
+
+
+        function getproductsData() {
+            fetch('/store/ViewStoreProduct').then(response => response.json()).then(data => {
+                createCards(data)
+            })
+        }
+
+        function createCards(datas) {
+            var s = ""
+
+            document.getElementById('product-area').innerHTML = s;
+            datas.forEach(data => {
+                s += `<div class="col">
+                  <div class="border rounded p-3 shadow-sm history-card">
+                    <div class="d-flex gap-3">
+                        <img src="/static/media/${data.product_image}" alt=""
+                             class="img-fluid rounded bg-light ch-100">
+                        <span class="text-start">
+                    <h6 class="mb-1 fw-bold">${data.product_name}</h6>
+                    <div class="text-muted small text-opacity-50 mb-1">${data.Category_id}</div>
+                    </span>
+                        <div class="ms-auto text-end">`;
+
+                if (data.product_status == 'a') {
+                    s += `<small><i class="bi bi-check-circle-fill text-success ri-xl"></i>
+                                </small>Accepted
+                                <p class="mb-0 small text-success">${data.product_name}
+                                                         will be visible to customers</p>`;
+                } else if (data.product_status == 'p') {
+                    s += `<small><i class="ri-error-warning-fill text-warning ri-xl align-middle"></i>
+                                </small>Pending
+                                <p class="mb-0 small text-success">${data.product_name}
+                                    is not visible to customers</p>`
+
+                } else {
+                    s += `<small>
+                                    <i class="ri-close-circle-fill text-warning ri-xl align-middle"></i>
+                                </small>Blocked
+                                <p class="mb-0 small text-success">${data.product_name}
+                                    is not visible to customers</p>`
+                }
+
+
+                s += `</div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 border-top pt-3 mt-3">
+                <span class="text-start">
+                <p class="mb-0 ">MRP - &#8377;${data.product_price} <span class="text-muted">after ${data.product_offer}% discount</span> </p>
+                <p class="mb-0 lead text-success">Selling Price - <b>&#8377;${data.product_new_price}</b></p>
+                </span>
+                        <div class="ms-auto text-end">
+                            <button type="button" class="btn btn-sm btn-outline-success text-uppercase me-2 p-3"
+                                    onclick="deleteProduct(${data.id})">Delete Product
+                            </button>
+
+                            <button class="btn btn-sm btn-success text-uppercase p-3"
+                                                         type="button" onclick='OpenUpdateProductModel(${JSON.stringify(data)})'>Update Product
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+
+            })
+
+            document.getElementById('product-area').innerHTML = s;
+        }
+
+        function deleteProduct(id) {
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this Product",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        fetch(`/store/DeleteProduct/${id}`).then(response => response.text()).then(data => {
+                            if (data === 'success') {
+                                getproductsData()
+                                swal({
+                                    title: "Product Successfully Deleted",
+                                    text: "Product has been deleted",
+                                    icon: "success",
+                                });
+                            }
+                        })
+                    } else {
+                        swal({
+                            title: "Product not deleted",
+                            text: "Your Product has not been deleted",
+                            icon: "info",
+                        });
+                    }
+
+                });
+        }
+
+        function submitUpdateProduct(){
+            if ($("#update-product-form").valid()) {
+                var controls = document.getElementById('update-product-form').elements;
+                var formdata = new FormData;
+                for (var i = 0; i < controls.length; i++) {
+                    if (controls[i].type == 'file') {
+                        formdata.append(controls[i].name, controls[i].files[0]);
+                    } else {
+                        formdata.append(controls[i].name, controls[i].value);
+                    }
+                }
+                fetch('/store/updateProduct', {
+                    'method': 'POST',
+                    'body': formdata
+                }).then(response => response.text()).then(data => {
+                    if (data === 'success') {
+                        document.getElementById('update-product-form').reset();
+                         $("#update-product-modal").modal("hide");
+                        getproductsData()
+                        swal({
+                            title: "Product Successfully Updated",
+                            icon: "success",
+                        });
+                    } else {
+                        swal({
+                            title: "An Error Occurred",
+                            text: "An Error has occurred while submitting",
+                            icon: "warning",
+                        });
+                    }
+                })
+            }
+        }
+
+        function OpenUpdateProductModel(data){
+            console.log(data)
+            $("#update-product-modal").modal("show");
+            document.getElementById('product_id').value = data['id'];
+            document.getElementById('product_id').type = 'hidden';
+            document.getElementById('product_name').value = data['product_name'];
+            document.getElementById('product_description').value = data['product_description'];
+            document.getElementById('product_price').value = data['product_price'];
+            document.getElementById('product_offer').value = data['product_offer'];
+            document.getElementById('Category').value = data['Category_id'];
+            document.getElementById('update-form-product-image').style.display = "inline"
+            document.getElementById('update-form-product-image').src = `/static/media/${data['product_image']}`
+        }
+
+        function removeOldImage(){
+            document.getElementById('update-form-product-image').style.display = "none"
+        }
+
+        function submitAddProduct() {
+            if ($("#add-product-form").valid()) {
+                var controls = document.getElementById('add-product-form').elements;
+                var formdata = new FormData;
+                for (var i = 0; i < controls.length; i++) {
+                    if (controls[i].type == 'file') {
+                        formdata.append(controls[i].name, controls[i].files[0]);
+                    } else {
+                        formdata.append(controls[i].name, controls[i].value);
+                    }
+                }
+                fetch('/store/AddProduct', {
+                    'method': 'POST',
+                    'body': formdata
+                }).then(response => response.text()).then(data => {
+                    if (data === 'success') {
+                        document.getElementById('add-product-form').reset();
+                        getproductsData()
+                        swal({
+                            title: "Product Successfully Listed",
+                            text: "Product will be visible once its status is updated to Approved",
+                            icon: "success",
+                        });
+                    } else {
+                        swal({
+                            title: "An Error Occurred",
+                            text: "An Error has occurred while submitting",
+                            icon: "warning",
+                        });
+                    }
+                })
+            }
+        }
+
+
+    </script>
+
+{% endblock %}
