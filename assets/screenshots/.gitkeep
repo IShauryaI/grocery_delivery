@@ -1,0 +1,11 @@
+# Screenshots and demo images will be placed here
+# This file ensures the directory is tracked by git
+
+# Suggested screenshot structure:
+# - homepage.png
+# - product-catalog.png  
+# - shopping-cart.png
+# - admin-dashboard.png
+# - order-management.png
+# - payment-process.png
+# - mobile-responsive.png
