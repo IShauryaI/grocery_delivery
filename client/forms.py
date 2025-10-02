@@ -3,10 +3,8 @@ from .models import *
 
 class ClientForm(forms.ModelForm):
     class Meta:
-
         model = Client
         fields = ['client_name', 'client_mobile', 'client_email', 'client_address', 'City', 'client_password']
-
         widgets = {
             'client_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Eg: Jhon Doe', 'data-rule-required':'true'}),
             'client_mobile': forms.TextInput(attrs={'class': 'form-control', 'type': 'number', 'placeholder': 'Eg: 9915XXXXXX', 'data-rule-required':'true'}),
@@ -15,7 +13,6 @@ class ClientForm(forms.ModelForm):
             'City': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Select City', 'data-rule-required':'true'}),
             'client_password': forms.TextInput(attrs={'class': 'form-control', 'type': 'password', 'placeholder': ' *  *  *  *  *  *  *  *  *  *', 'data-rule-required':'true'})
         }
-
         labels = {
             'client_name': "Enter Your Name",
             'client_mobile': "Enter Your Contact Info",

@@ -1,3 +1,5 @@
+// <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 function payment(cost, mobile, email, formdata) {
 
     // var customer_info = {{ request.session.customer_info|safe }};
@@ -13,28 +15,23 @@ function payment(cost, mobile, email, formdata) {
     var options = {
         "key": "rzp_test_dRWiKHS7zr2Gki",
         "amount": amount,
-        "name": "DailyDelivery Payments",
+        "name": "Demo",
         "description": "",
+        "currency": "INR",
         "image": "",
         "handler": function (response) {
-            //alert(response.razorpay_payment_id);
-            if (response.razorpay_payment_id == "") {
+            if (response.razorpay_payment_id === "") {
                 alert('Failed');
             } else {
                 sendCartData(formdata)
             }
         },
-        "prefill": {
-            "name": "",
-            "email": email,
-            "contact": mobile,
-        },
         "notes": {
             "address": ""
         },
         "theme": {
-            "color": "#282424"
-        }
+            "color": "#050505"
+        },
     };
     var rzp1 = new Razorpay(options);
     rzp1.open();
@@ -50,8 +47,7 @@ function sendCartData(formdata) {
 
             getCartEntries()
             window.location.href = '/orderSuccess'
-        }
-        else{
+        } else {
             swal({
                 title: "Payment failed",
                 text: "Please try again later",

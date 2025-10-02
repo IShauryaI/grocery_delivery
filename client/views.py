@@ -5,6 +5,7 @@ from django.http import *
 from django.shortcuts import *
 from django.views.generic import View
 
+import mailDemo
 from .forms import *
 
 
@@ -342,6 +343,8 @@ class sendCartData(View):
                                  'cart_total_price': row.cart_total_price})
 
             return JsonResponse(cartList, safe=False)
+        else:
+            return JsonResponse([], safe=False)
 
 
 class DecreaseCartQuantity(View):
@@ -420,6 +423,16 @@ class ConfirmOrder(View):
             orderDetailObj.save()
             rows.delete()
 
+        to = request.session['client_info']['email']
+        subject = "Congratulations! Your Order has been Placed Successfully..."
+        message = f"""Congratulations! Your Order has been Placed Successfully
+        
+        Dear {request.session['client_info']['name']}, Your Total Amount is {orderObj.total_price}.
+        
+        Your Order ID is {orderObj.id}
+            
+        """
+        obj = mailDemo.sendEmail(to, subject, message)
         return HttpResponse('success')
 
 
