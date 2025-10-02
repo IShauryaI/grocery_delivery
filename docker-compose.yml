@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=1
+      - DATABASE_ENGINE=django.db.backends.mysql
+      - DATABASE_NAME=grocery_delivery_db
+      - DATABASE_USER=grocery_user
+      - DATABASE_PASSWORD=grocery_pass
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./DataBase:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_DATABASE=grocery_delivery_db
+      - MYSQL_USER=grocery_user
+      - MYSQL_PASSWORD=grocery_pass
+      - MYSQL_ROOT_PASSWORD=root_password
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deployment/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./deployment/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_volume:/app/static
+      - media_volume:/app/media
+      - ./deployment/ssl:/etc/nginx/ssl
+    depends_on:
+      - web
+    restart: unless-stopped
+    profiles:
+      - production
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    profiles:
+      - cache
+
+volumes:
+  mysql_data:
+  static_volume:
+  media_volume:
+  redis_data:
